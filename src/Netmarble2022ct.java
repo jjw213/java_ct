@@ -60,6 +60,8 @@ public class Netmarble2022ct {
             int num = logs[i][1];
             bingoArray(num);
             if (logs[i][0] != day) {
+                //날짜가 바뀜 -> 초기화 전에 빙고 점수 계산
+
                 //바뀐 날짜가 기존의 주간 날짜와도 8일이상 차이가 나는지?
                 if (logs[i][0] >= day + 7)
                     fillZero('w');
