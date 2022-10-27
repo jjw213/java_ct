@@ -59,11 +59,12 @@ public class Netmarble2022ct {
         for (int i = 0; i < logs.length; i++) { //빙고 채우기
             int num = logs[i][1];
             bingoArray(num);
-            if(logs[i][0]!=day){
+            if (logs[i][0] != day) {
                 //바뀐 날짜가 기존의 주간 날짜와도 8일이상 차이가 나는지?
-                fillZero('w');
+                if (logs[i][0] >= day + 7)
+                    fillZero('w');
+                else fillZero('d');
             }
-            else fillZero('d');
 
         }
         return bingo;
@@ -71,28 +72,29 @@ public class Netmarble2022ct {
 
     public static void bingoArray(int m) {
         if (1 <= m && m <= 3)
-            daily[0][m-1] = 1;
-        else if (4<= m && m <=6) daily[0][m-4]=1;
-        else if (7<= m && m <=9) daily[0][m-7]=1;
-        else if (10<= m && m <=12) weekly[0][m-10]=1;
-        else if (13<= m && m <=15) weekly[0][m-13]=1;
-        else if (16<= m && m <=18) weekly[0][m-16]=1;
-        else if (19<= m && m <=21) daily[0][m-19]=1;
-        else if (22<= m && m <=24) daily[0][m-22]=1;
-        else if (25<= m && m <=27) daily[0][m-25]=1;
+            daily[0][m - 1] = 1;
+        else if (4 <= m && m <= 6) daily[0][m - 4] = 1;
+        else if (7 <= m && m <= 9) daily[0][m - 7] = 1;
+        else if (10 <= m && m <= 12) weekly[0][m - 10] = 1;
+        else if (13 <= m && m <= 15) weekly[0][m - 13] = 1;
+        else if (16 <= m && m <= 18) weekly[0][m - 16] = 1;
+        else if (19 <= m && m <= 21) daily[0][m - 19] = 1;
+        else if (22 <= m && m <= 24) daily[0][m - 22] = 1;
+        else if (25 <= m && m <= 27) daily[0][m - 25] = 1;
     }
-    public static void fillZero(char arr){
-        if(arr=='d'){
-            for (int i =0; i<3;i++){
-               for(int j=0;j<3;j++){
-                   daily[i][j]=0;
-               }
+
+    public static void fillZero(char arr) {
+        if (arr == 'd') {
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 3; j++) {
+                    daily[i][j] = 0;
+                }
             }
-        } else if (arr=='w') {
-            for (int i =0; i<3;i++){
-                for(int j=0;j<3;j++){
-                    daily[i][j]=0;
-                    weekly[i][j]=0;
+        } else if (arr == 'w') {
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 3; j++) {
+                    daily[i][j] = 0;
+                    weekly[i][j] = 0;
                 }
             }
         }
