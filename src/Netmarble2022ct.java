@@ -56,13 +56,15 @@ public class Netmarble2022ct {
         int day = logs[0][0];
         int n = 0;
 
-        for (int i = 1; i <= 300; i++) { //빙고 채우기
+        for (int i = 0; i < logs.length; i++) { //빙고 채우기
             int num = logs[i][1];
             bingoArray(num);
             if(logs[i][0]!=day){
                 //바뀐 날짜가 기존의 주간 날짜와도 8일이상 차이가 나는지?
-
+                fillZero('w');
             }
+            else fillZero('d');
+
         }
         return bingo;
     }
@@ -90,6 +92,7 @@ public class Netmarble2022ct {
             for (int i =0; i<3;i++){
                 for(int j=0;j<3;j++){
                     daily[i][j]=0;
+                    weekly[i][j]=0;
                 }
             }
         }
