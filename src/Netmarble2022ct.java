@@ -29,7 +29,7 @@ public class Netmarble2022ct {
     static int[][] daily = new int[3][3];
     static int[][] weekly = new int[3][3];
     static int[][] monthly = new int[3][3];
-
+    static int bingo = 0;
     public static void main(String[] args) throws IOException {
 //        Scanner sc = new Scanner(System.in);
 //        a= new int[sc.nextInt()];
@@ -51,8 +51,6 @@ public class Netmarble2022ct {
     }
 
     public static int solution(int[][] logs) {
-        int bingo = 0;
-
         int day = logs[0][0];
         int n = 0;
 
@@ -61,14 +59,27 @@ public class Netmarble2022ct {
             bingoArray(num);
             if (logs[i][0] != day) {
                 //날짜가 바뀜 -> 초기화 전에 빙고 점수 계산
-
+                System.out.println("daily 빙고!");
+                for(int j=0;j<3;j++){
+                    for(int k=0;k<3;k++) {
+                        dfs(daily, j, k, "all",0);
+                    }
+                }
                 //바뀐 날짜가 기존의 주간 날짜와도 8일이상 차이가 나는지?
-                if (logs[i][0] >= day + 7)
+                if (logs[i][0] >= day + 7) {
+                    for(int j=0;j<3;j++){
+                        for(int k=0;k<3;k++) {
+                            dfs(weekly, j, k, "all",0);
+                        }
+                    }
                     fillZero('w');
+                }
                 else fillZero('d');
+                day=logs[i][0];
             }
 
         }
+        System.out.println(bingo);
         return bingo;
     }
 
@@ -101,5 +112,46 @@ public class Netmarble2022ct {
             }
         }
     }
+    public static void dfs(int[][] board, int row, int col, String dir,int bingoStack){
+        System.out.println(row+", "+col+", 방향 어디?? "+dir);
+        if( row>=board.length || col>=board[row].length || row<0||col<0) {//배열의 범위를 벗어나면 리턴
+            System.out.println("배열 범위 벗어남. row = "+row+", col = "+col+", bingo스택 : "+bingoStack);
+            if (++bingoStack >= 3) bingo++;
+            return;
+        }
+        if( board[row][col] == 0) return; // 체크 안 된 빙고라면 리텅
 
+//        //오른쪽 아래 가는 방향 재귀
+//        int size = (int) board[row][col];
+        switch (dir){
+            case "all":
+                dfs(board,row,col+1,"right",++bingoStack); //오른쪽
+                dfs(board,row,col-1,"left",++bingoStack); //왼쪽
+                dfs(board,row+1,col,"down",++bingoStack);//아래
+                if(row==0 && col==0){ // 1 번 째 칸일 때 우측하단으로 가는 대각선 빙고도 검색
+                    dfs(board,row+1,col+1,"rightDown",++bingoStack);//우측 아래
+                } else if (row==0 && col==2) { // 첫 줄, 마지막 칸일 때 좌측 하단 대각선
+                    dfs(board,row+1,col-1,"leftDown",++bingoStack);//좌측 아래
+                }
+                break;
+            case "right":
+                dfs(board,row,col+1,"right",++bingoStack); //오른쪽
+                break;
+            case "left":
+                dfs(board,row,col-1,"left",++bingoStack); //왼쪽
+                break;
+            case "down":
+                dfs(board,row+1,col,"down",++bingoStack);//아래
+                System.out.println("아래로 갑니다!");
+                break;
+            case "rightDown":
+                dfs(board,row+1,col+1,"rightDown",++bingoStack);//아래
+                break;
+            case "leftDown":
+                dfs(board,row+1,col-1,"leftDown",++bingoStack);//아래
+                break;
+        }
+
+        //위에서부터 아래로 내려오기 때문에 위로가는 dfs는 할 필요 없음
+    }
 }
